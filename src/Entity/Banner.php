@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Baraja\Banner\Entity;
 
 
-use Baraja\Doctrine\Identifier\Identifier;
+use Baraja\Doctrine\Identifier\IdentifierUnsigned;
 use Baraja\Localization\TranslateObject;
 use Baraja\Localization\Translation;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'core__banner')]
 class Banner
 {
-	use Identifier;
+	use IdentifierUnsigned;
 	use TranslateObject;
 
 	#[ORM\Column(type: 'translate')]
@@ -29,7 +29,7 @@ class Banner
 	private string $type;
 
 	#[ORM\Column(type: 'text', nullable: true)]
-	private ?string $description;
+	private ?string $description = null;
 
 	#[ORM\Column(type: 'boolean')]
 	private bool $active = false;
@@ -44,7 +44,7 @@ class Banner
 	private array $meta = [];
 
 	/** @var BannerItem[]|Collection */
-	#[ORM\OneToMany(mappedBy: 'banner_id', targetEntity: BannerItem::class)]
+	#[ORM\OneToMany(mappedBy: 'banner', targetEntity: BannerItem::class)]
 	private $bannerItems;
 
 
@@ -74,17 +74,13 @@ class Banner
 		$this->description = $description;
 	}
 
-	/**
-	 * @return bool
-	 */
+
 	public function isActive(): bool
 	{
 		return $this->active;
 	}
 
-	/**
-	 * @param bool $active
-	 */
+
 	public function setActive(bool $active): void
 	{
 		$this->active = $active;
@@ -99,7 +95,7 @@ class Banner
 	}
 
 	/**
-	 * @param array $meta
+	 * @param array<string, string|int|bool> $meta
 	 */
 	public function setMeta(array $meta): void
 	{
