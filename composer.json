@@ -9,7 +9,9 @@
 		}
 	],
 	"require": {
-		"php": "^8.0"
+		"php": "^8.0",
+		"baraja-core/cms": "^4.0",
+		"baraja-core/doctrine-fulltext-search": "^3.0"
 	},
 	"require-dev": {
 		"tracy/tracy": "^2.8",
