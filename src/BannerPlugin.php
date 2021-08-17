@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Baraja\Banner;
 
-use Baraja\Plugin\BasePlugin;
 
+use Baraja\Plugin\BasePlugin;
 
 class BannerPlugin extends BasePlugin
 {
