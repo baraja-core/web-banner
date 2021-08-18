@@ -10,9 +10,9 @@
 	],
 	"require": {
 		"php": "^8.0",
-		"baraja-core/plugin-system": "^v2.2.0",
-		"baraja-core/doctrine": "^v3.4.0",
-		"baraja-core/structured-api": "^v3.2.0"
+		"baraja-core/plugin-system": "^v2.2",
+		"baraja-core/doctrine": "^v3.4",
+		"baraja-core/structured-api": "^v3.2"
 	},
 	"require-dev": {
 		"tracy/tracy": "^2.8",

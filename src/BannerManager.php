@@ -21,11 +21,28 @@ final class BannerManager
 	/**
 	 * @throws NoResultException|NonUniqueResultException
 	 */
+	public function getBannerById(int $id): Banner
+	{
+		return $this->entityManager->getRepository(Banner::class)
+			->createQueryBuilder('banner')
+			->select('banner, bannerItem')
+			->join('banner.bannerItems', 'bannerItem')
+			->where('banner.id = :id')
+			->setParameter('id', $id)
+			->orderBy('bannerItem.position', 'DESC')
+			->getQuery()
+			->getSingleResult();
+	}
+
+
+	/**
+	 * @throws NoResultException|NonUniqueResultException
+	 */
 	public function getBannerBySlug(string $slug): Banner
 	{
 		return $this->entityManager->getRepository(Banner::class)
 			->createQueryBuilder('banner')
-			->select('name, slug')
+			->select('banner, bannerItem')
 			->join('banner.bannerItems', 'bannerItem')
 			->where('banner.slug = :slug')
 			->setParameter('slug', $slug)

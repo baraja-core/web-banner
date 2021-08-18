@@ -40,6 +40,7 @@ class Banner
 	#[ORM\Column(type: 'integer')]
 	private int $height;
 
+	/** @var array<string, string|int|bool> */
 	#[ORM\Column(type: 'json')]
 	private array $meta = [];
 
@@ -48,15 +49,16 @@ class Banner
 	private $bannerItems;
 
 
-	public function __construct(Translation $name, string $slug, string $type, int $width, int $height)
+	public function __construct(string $name, string $slug, string $type, int $width, int $height)
 	{
-		$this->name = $name;
+		$this->name = $this->setName($name);
 		$this->slug = $slug;
 		$this->type = $type;
 		$this->width = $width;
 		$this->height = $height;
 		$this->bannerItems = new ArrayCollection;
 	}
+
 
 	/**
 	 * @return string|null
@@ -65,6 +67,7 @@ class Banner
 	{
 		return $this->description;
 	}
+
 
 	/**
 	 * @param string|null $description
@@ -86,13 +89,15 @@ class Banner
 		$this->active = $active;
 	}
 
+
 	/**
-	 * @return array
+	 * @return array<string, string|int|bool>
 	 */
 	public function getMeta(): array
 	{
 		return $this->meta;
 	}
+
 
 	/**
 	 * @param array<string, string|int|bool> $meta
