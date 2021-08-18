@@ -10,6 +10,7 @@ use Baraja\Doctrine\EntityManager;
 use Baraja\StructuredApi\BaseEndpoint;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Nette\Utils\Strings;
 
 final class BannerEndpoint extends BaseEndpoint
 {
@@ -55,10 +56,16 @@ final class BannerEndpoint extends BaseEndpoint
 	}
 
 
-	public function postCreateBanner(string $name, string $slug, string $type, int $width, int $height): void
+	public function postCreateBanner(string $name, string $type, int $width, int $height, ?string $slug = null): void
 	{
-		if (!$name || !$slug || !$type || !$width || !$height) {
-			$this->sendError('Please enter all fields.');
+		$name = trim($name);
+		$type = trim($type);
+		$slug = trim($slug ?? '');
+		if ($slug === '') {
+			$slug = Strings::webalize($name);
+		}
+		if ($name === '' || $type === '') {
+			$this->sendError('Name and type can not be empty.');
 		}
 
 		$banner = new Banner($name, $slug, $type, $width, $height);
