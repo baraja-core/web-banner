@@ -27,23 +27,28 @@ class BannerExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		PluginComponentExtension::defineBasicServices($builder);
-		OrmAnnotationsExtension::addAnnotationPathToManager($builder, 'Baraja\Banner', __DIR__);
+		OrmAnnotationsExtension::addAnnotationPathToManager($builder, 'Baraja\Banner', __DIR__ . '/Entity');
 
 		$builder->addDefinition($this->prefix('bannerManager'))
 			->setFactory(BannerManager::class);
 
 		/** @var ServiceDefinition $pluginManager */
 		$pluginManager = $this->getContainerBuilder()->getDefinitionByType(PluginManager::class);
-		$pluginManager->addSetup('?->addComponent(?)', ['@self', [
-			'key' => 'Banner',
-			'name' => 'cms-banner-default',
-			'implements' => BannerPlugin::class,
-			'componentClass' => VueComponent::class,
-			'view' => 'default',
-			'source' => __DIR__ . '/../templates/default.js',
-			'position' => 100,
-			'tab' => 'Banners',
-			'params' => [],
-		]]);
+		$pluginManager->addSetup(
+			'?->addComponent(?)',
+			[
+				'@self',
+				[
+					'key' => 'Banner',
+					'name' => 'cms-banner-default',
+					'implements' => BannerPlugin::class,
+					'componentClass' => VueComponent::class,
+					'view' => 'default',
+					'source' => __DIR__ . '/../templates/default.js',
+					'position' => 100,
+					'tab' => 'Banners',
+				],
+			]
+		);
 	}
 }

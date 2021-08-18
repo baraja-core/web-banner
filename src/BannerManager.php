@@ -13,7 +13,7 @@ use Doctrine\ORM\NoResultException;
 final class BannerManager
 {
 	public function __construct(
-		private EntityManager $entityManager
+		private EntityManager $entityManager,
 	) {
 	}
 

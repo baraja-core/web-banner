@@ -6,28 +6,30 @@ namespace Baraja\Banner;
 
 
 use Baraja\Banner\Entity\Banner;
-use Baraja\StructuredApi\BaseEndpoint;
 use Baraja\Doctrine\EntityManager;
+use Baraja\StructuredApi\BaseEndpoint;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
 final class BannerEndpoint extends BaseEndpoint
 {
-	public function __construct (
-		private EntityManager $entityManager)
-	{
+	public function __construct(
+		private EntityManager $entityManager,
+		private BannerManager $bannerManager,
+	) {
 	}
 
 
 	public function actionDefault(): void
 	{
+		/** @var Banner[] $banners */
 		$banners = $this->entityManager->getRepository(Banner::class)
 			->createQueryBuilder('banner')
 			->select('banner, bannerItem')
 			->join('banner.bannerItems', 'bannerItem')
 			->orderBy('bannerItem.position', 'DESC')
 			->getQuery()
-			->getArrayResult();
+			->getResult();
 
 		$return = [];
 		foreach ($banners as $banner) {
@@ -47,7 +49,7 @@ final class BannerEndpoint extends BaseEndpoint
 
 		$this->sendJson(
 			[
-				'banners' => $return,
+				'items' => $return,
 			]
 		);
 	}
@@ -62,31 +64,36 @@ final class BannerEndpoint extends BaseEndpoint
 		$banner = new Banner($name, $slug, $type, $width, $height);
 		$this->entityManager->persist($banner);
 		$this->entityManager->flush();
-		$this->sendOk([
-			'id' => $banner->getId(),
-		], 'Banner created');
+		$this->flashMessage('Banner has been created.', self::FLASH_MESSAGE_SUCCESS);
+		$this->sendOk(
+			[
+				'id' => $banner->getId(),
+			]
+		);
 	}
 
 
 	public function actionOverview(int $id): void
 	{
 		try {
-			$banner = $this->getBannerById($id);
+			$banner = $this->bannerManager->getBannerById($id);
 		} catch (NoResultException | NonUniqueResultException) {
 			$this->sendError('Banner "' . $id . '" does not exist.');
 		}
 
-		$this->sendJson([
-			'id' => $banner->getId(),
-			'name' => (string) $banner->getName(),
-			'slug' => $banner->getSlug(),
-			'type' => $banner->getType(),
-			'description' => (string) $banner->getDescription(),
-			'active' => $banner->isActive(),
-			'width' => $banner->getWidth(),
-			'height' => $banner->getHeight(),
-			'meta' => $banner->getMeta(),
-			'bannerItems' => $banner->getBannerItems(),
-		]);
+		$this->sendJson(
+			[
+				'id' => $banner->getId(),
+				'name' => (string) $banner->getName(),
+				'slug' => $banner->getSlug(),
+				'type' => $banner->getType(),
+				'description' => (string) $banner->getDescription(),
+				'active' => $banner->isActive(),
+				'width' => $banner->getWidth(),
+				'height' => $banner->getHeight(),
+				'meta' => $banner->getMeta(),
+				'bannerItems' => $banner->getBannerItems(),
+			]
+		);
 	}
 }
