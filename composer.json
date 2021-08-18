@@ -6,10 +6,17 @@
 		{
 			"name": "Jan Barášek",
 			"homepage": "https://baraja.cz"
+		},
+		{
+			"name": "Jakub Filip"
 		}
 	],
 	"require": {
-		"php": "^8.0"
+		"php": "^8.0",
+		"baraja-core/plugin-system": "^2.2",
+		"baraja-core/doctrine": "^3.4",
+		"baraja-core/structured-api": "^3.2",
+		"baraja-core/localization": "^2.0"
 	},
 	"require-dev": {
 		"tracy/tracy": "^2.8",
