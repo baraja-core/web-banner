@@ -51,7 +51,7 @@ final class BannerEndpoint extends BaseEndpoint
 		$this->sendJson(
 			[
 				'items' => $return,
-			]
+			],
 		);
 	}
 
@@ -75,7 +75,7 @@ final class BannerEndpoint extends BaseEndpoint
 		$this->sendOk(
 			[
 				'id' => $banner->getId(),
-			]
+			],
 		);
 	}
 
@@ -100,7 +100,7 @@ final class BannerEndpoint extends BaseEndpoint
 				'height' => $banner->getHeight(),
 				'meta' => $banner->getMeta(),
 				'bannerItems' => $banner->getBannerItems(),
-			]
+			],
 		);
 	}
 }

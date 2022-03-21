@@ -48,7 +48,7 @@ class BannerExtension extends CompilerExtension
 					'position' => 100,
 					'tab' => 'Banners',
 				],
-			]
+			],
 		);
 	}
 }
