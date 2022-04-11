@@ -44,7 +44,9 @@ class BannerItem
 	{
 		$this->banner = $banner;
 		$this->mediaSource = $mediaSource;
-		$this->setMessage($message);
+		if ($message !== null) {
+			$this->setMessage($message);
+		}
 	}
 
 
