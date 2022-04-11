@@ -21,14 +21,14 @@ class BannerItem
 	use IdentifierUnsigned;
 	use TranslateObject;
 
+	#[ORM\Column(type: 'translate', nullable: true)]
+	protected ?Translation $message = null;
+
 	#[ORM\ManyToOne(targetEntity: Banner::class, inversedBy: 'bannerItems')]
 	private Banner $banner;
 
 	#[ORM\Column(type: 'text', nullable: true)]
-	private ?string $mediaSource = null;
-
-	#[ORM\Column(type: 'translate', nullable: true)]
-	private ?Translation $message = null;
+	private ?string $mediaSource;
 
 	#[ORM\Column(type: 'integer')]
 	private int $position = 0;
@@ -38,6 +38,14 @@ class BannerItem
 
 	#[ORM\Column(type: 'text', nullable: true)]
 	private ?string $link = null;
+
+
+	public function __construct(Banner $banner, ?string $mediaSource = null, ?string $message = null)
+	{
+		$this->banner = $banner;
+		$this->mediaSource = $mediaSource;
+		$this->setMessage($message);
+	}
 
 
 	public function getBanner(): Banner

@@ -27,16 +27,16 @@ class Banner
 	use TranslateObject;
 
 	#[ORM\Column(type: 'translate')]
-	private Translation $name;
+	protected Translation $name;
+
+	#[ORM\Column(type: 'translate', nullable: true)]
+	protected ?Translation $description = null;
 
 	#[ORM\Column(type: 'string', length: 64, unique: true)]
 	private string $slug;
 
 	#[ORM\Column(type: 'string', length: 16)]
 	private string $type;
-
-	#[ORM\Column(type: 'translate', nullable: true)]
-	private ?Translation $description = null;
 
 	#[ORM\Column(type: 'boolean')]
 	private bool $active = false;
